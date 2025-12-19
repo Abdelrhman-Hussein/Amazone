@@ -18,7 +18,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function CheckOut({ cartId, token } : {cartId:string, token:string|undefined}) {
+export default function CheckOut({ cartId, token }: { cartId: string, token: string | undefined }) {
 
     //controlled component by useRef instead useState to avoid Renders 
     const detailsInput = useRef<HTMLInputElement | null>(null)
@@ -28,43 +28,43 @@ export default function CheckOut({ cartId, token } : {cartId:string, token:strin
     //handling visa and cash loading
     const [isVisaLoading, setIsVisaLoading] = useState(false)
     const [isCashLoading, setIsCashLoading] = useState(false)
-    
+
     //online && cash payment functions
-    async function checkOutSession(){
+    async function checkOutSession() {
         setIsVisaLoading(true)
-        const shippingAddress={
-            details:detailsInput.current?.value,
+        const shippingAddress = {
+            details: detailsInput.current?.value,
             city: cityInput.current?.value,
             phone: phoneInput.current?.value,
         }
         const response = await fetch(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
             {
-                method:"POST",
-                body:JSON.stringify({shippingAddress}),
-                headers:{
+                method: "POST",
+                body: JSON.stringify({ shippingAddress }),
+                headers: {
                     token: token!,
                     'content-type': 'application/json'
                 }
             }
         )
         const data = await response.json()
-        if(data.status='success'){
-            window.location.href=data.session.url
+        if (data.status = 'success') {
+            window.location.href = data.session.url
         }
         setIsVisaLoading(false)
     }
-    async function cashPayment(){
+    async function cashPayment() {
         setIsCashLoading(true)
-        const shippingAddress={
-            details:detailsInput.current?.value,
+        const shippingAddress = {
+            details: detailsInput.current?.value,
             city: cityInput.current?.value,
             phone: phoneInput.current?.value,
         }
-        const response = await fetch('https://ecommerce.routemisr.com/api/v1/orders/'+cartId,
+        const response = await fetch('https://ecommerce.routemisr.com/api/v1/orders/' + cartId,
             {
-                method:"POST",
-                body:JSON.stringify({shippingAddress}),
-                headers:{
+                method: "POST",
+                body: JSON.stringify({ shippingAddress }),
+                headers: {
                     token: token!,
                     'content-type': 'application/json'
                 }
@@ -72,8 +72,8 @@ export default function CheckOut({ cartId, token } : {cartId:string, token:strin
         )
         const data = await response.json()
         console.log(data)
-        if(data.status='success'){
-            window.location.href ='http://localhost:3000/allorders'
+        if (data.status = 'success') {
+            window.location.href = 'http://localhost:3000/allorders'
         }
         setIsCashLoading(false)
     }
@@ -97,22 +97,22 @@ export default function CheckOut({ cartId, token } : {cartId:string, token:strin
                         <div className="grid gap-4">
                             <div className="grid gap-3">
                                 <Label>City</Label>
-                                <Input ref={cityInput} id="city"/>
+                                <Input ref={cityInput} id="city" />
                             </div>
                             <div className="grid gap-3">
                                 <Label>Details</Label>
-                                <Input ref={cityInput} id="details"/>
+                                <Input ref={cityInput} id="details" />
                             </div>
                             <div className="grid gap-3">
                                 <Label>Phone</Label>
-                                <Input id="phone"/>
+                                <Input id="phone" />
                             </div>
                         </div>
                         <DialogFooter>
                             <DialogClose asChild>
                                 <Button className='cursor-pointer' variant="outline">Cancel</Button>
                             </DialogClose>
-                            <Button onClick={() => checkOutSession()} className='cursor-pointer bg-main' type="submit">{isVisaLoading ? <Loader className='animate-spin'/> : <LiaCcVisa />}Visa</Button>
+                            <Button onClick={() => checkOutSession()} className='cursor-pointer bg-main' type="submit">{isVisaLoading ? <Loader className='animate-spin' /> : <LiaCcVisa />}Visa</Button>
                             <Button onClick={() => cashPayment()} className='cursor-pointer bg-main' type="submit">{isCashLoading ? <Loader className='animate-spin' /> : <Banknote />}Cash</Button>
                         </DialogFooter>
                     </DialogContent>
