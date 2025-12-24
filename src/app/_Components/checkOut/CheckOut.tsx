@@ -37,7 +37,8 @@ export default function CheckOut({ cartId, token }: { cartId: string, token: str
             city: cityInput.current?.value,
             phone: phoneInput.current?.value,
         }
-        const response = await fetch(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
+        const response = await fetch(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=${window.location.origin}`,
+        // const response = await fetch(`https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:3000`,
             {
                 method: "POST",
                 body: JSON.stringify({ shippingAddress }),
@@ -73,7 +74,8 @@ export default function CheckOut({ cartId, token }: { cartId: string, token: str
         const data = await response.json()
         console.log(data)
         if (data.status = 'success') {
-            window.location.href = 'http://localhost:3000/allorders'
+            // window.location.href = 'http://localhost:3000/allorders'
+            window.location.href = '/allorders'
         }
         setIsCashLoading(false)
     }

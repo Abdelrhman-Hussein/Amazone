@@ -55,12 +55,18 @@ export default function UpdatePassword() {
         //api call (server action)
         const data = await UpdateUserPassword(values)
         setIsLoading(false)
-        if (data.token !== null) {
+        if (data.token) {
             toast.success('Password Updated Successfully')
             router.push('/login')
         } else {
             setApiError(data.message)
         }
+        // if (data.token !== null) {
+        //     toast.success('Password Updated Successfully')
+        //     router.push('/login')
+        // } else {
+        //     setApiError(data.message)
+        // }
     }
 
     return (
